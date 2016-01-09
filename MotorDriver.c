@@ -133,6 +133,7 @@ __interrupt void timer_A0(void)
 
 	case 2:
 		P1OUT ^= BIT0;
+	//Overflow
 	case 10:
 		P1OUT ^= (BIT6);
 		break;
