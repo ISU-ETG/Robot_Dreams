@@ -9,5 +9,5 @@
 #include "UART.h"
 
 void UART_Init(uint32_t baud) {
-	UCA0CTL0 =
+
 }

@@ -6,7 +6,6 @@
 
 #include "MotorDriver.h"
 #include <stdint.h>
-
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	
@@ -16,7 +15,7 @@ int main(void) {
     P1OUT |= BIT6 | BIT0;
 
     while(1) {
-		MotorDriver_SetLeft(-127);
+		MotorDriver_SetLeft(255);
 		MotorDriver_SetRight(-127);
 		volatile long i;
 

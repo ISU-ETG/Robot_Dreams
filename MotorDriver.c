@@ -22,10 +22,14 @@ void MotorDriver_Init() {
 
 
 	//Set pin data directions to output
-	P2DIR |= BIT1 + BIT2 + BIT4 + BIT5;
+	//P2DIR |= BIT1 + BIT2 + BIT4 + BIT5;
+	LM_DIR |= LM_IN1 | LM_IN2;
+	RM_DIR |= RM_IN1 | RM_IN2;
+
 	//P2SEL |= BIT1 + BIT2;
 	//Set pins to LOW
-
+	CLEAR_BIT(LM_PORT, LM_IN1 | LM_IN2);
+	CLEAR_BIT(RM_PORT, RM_IN1 | RM_IN2);
 
 	//Clock divider 1
 	TA1CTL = TASSEL1 | MC0;
@@ -50,23 +54,34 @@ void MotorDriver_Init() {
 void MotorDriver_SetLeft(int16_t speed) {
 	if(speed < 0) {
 		//Set left motor in1 to 0
-		P2SEL &= ~(BIT1);
+		//P2SEL &= ~(BIT1);
+		//P2OUT &= ~BIT1;
+		CLEAR_BIT(LM_SEL, LM_IN1);
+		CLEAR_BIT(LM_PORT, BIT1);
 
 		//Set left motor in2 to output PWM
-		P2SEL |= BIT2;
+		//P2SEL |= BIT2;
+		SET_BIT(LM_SEL, LM_IN2);
 
 		speed = -speed;
 	}
 	else if(speed > 0) {
 		//Set left motor in1 to output PWM
-		P2SEL |= BIT1;
+		//P2SEL |= BIT1;
+		SET_BIT(LM_SEL, LM_IN1);
 
 		//Set left motor in2 to 0
-		P2SEL &= ~(BIT2);
+		//P2SEL &= ~(BIT2);
+		//		P2OUT &= ~BIT2;
+		CLEAR_BIT(LM_SEL, LM_IN2);
+		CLEAR_BIT(LM_PORT, LM_IN2);
+
 	}
 	else {
-		P2SEL &= ~(BIT1+ BIT2);
-
+		//P2SEL &= ~(BIT1 | BIT2);
+		//P2OUT &= ~(BIT1 | BIT2);
+		CLEAR_BIT(LM_SEL, LM_IN1 | LM_IN2);
+		CLEAR_BIT(LM_PORT, LM_IN1 | LM_IN2);
 		return;
 	}
 
@@ -77,23 +92,26 @@ void MotorDriver_SetLeft(int16_t speed) {
 void MotorDriver_SetRight(int16_t speed) {
 	if(speed < 0) {
 		//Set right motor in1 to 0
-		P2SEL &= ~(BIT4);
+		//P2SEL &= ~(BIT4);
+		CLEAR_BIT(RM_SEL, RM_IN1);
 
 		//Set right motor in2 to output PWM
-		P2SEL |= BIT5;
+		//P2SEL |= BIT5;
+		SET_BIT(RM_SEL, RM_IN2);
 
 		speed = -speed;
 	}
 	else if(speed > 0) {
 		//Set left motor in1 to output PWM
-		P2SEL |= BIT4;
-
+		//P2SEL |= BIT4;
+		SET_BIT(RM_SEL, RM_IN1);
 		//Set left motor in2 to 0
-		P2SEL &= ~(BIT5);
+		//P2SEL &= ~(BIT5);
+
 	}
 	else {
-		P2SEL &= ~(BIT4 + BIT5);
-
+		//P2SEL &= ~(BIT4 + BIT5);
+		CLEAR_BIT(RM_SEL, RM_IN1 | RM_IN2);
 		return;
 	}
 
@@ -106,8 +124,11 @@ void MotorDriver_ReadInit(void)
 	//Timer A0
 
 	//Set P1.1 (P1.0) to input
-	P1DIR &= ~(BIT1);
-	P1SEL |= BIT1;
+	//P1DIR &= ~(BIT1);
+	CLEAR_BIT(MOTOR_READ_DIR, RM_READ);
+
+	//P1SEL |= BIT1;
+	SET_BIT(MOTOR_READ_SEL, RM_READ);
 	//Set SMCLK, Continuous, Interupt Enable
 	TA0CTL = TASSEL1 | MC1 | TAIE;
 
