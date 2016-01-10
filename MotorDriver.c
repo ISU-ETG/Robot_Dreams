@@ -33,8 +33,6 @@ void MotorDriver_Init() {
 	//Set output mode to off
 	TA1CCTL0 = 0;
 
-
-
 	//Set output mode to mode 7 (reset/set)
 	TA1CCTL1 = OUTMOD2 + OUTMOD1 + OUTMOD0;
 	TA1CCTL2 = OUTMOD2 + OUTMOD1 + OUTMOD0;

@@ -11,7 +11,9 @@
 #include <MSP430.h>
 #include <stdint.h>
 
-void UART_Init(uint32_t baud);
+#define FCLK		16000000L
+
+void UART_Init();
 
 int16_t UART_Receive();
 

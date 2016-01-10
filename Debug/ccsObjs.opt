@@ -1,1 +1,1 @@
-"./MotorDriver.obj" "./main.obj" "../lnk_msp430g2553.cmd" -l"libc.a" 
+"./MotorDriver.obj" "./UART.obj" "./main.obj" "../lnk_msp430g2553.cmd" -l"libc.a" 
