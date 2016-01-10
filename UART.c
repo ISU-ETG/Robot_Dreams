@@ -8,10 +8,6 @@
 
 #include "UART.h"
 
-<<<<<<< HEAD
-void UART_Init(uint32_t baud) {
-
-=======
 void UART_Init() {
 	//Clock prescaler for 9600 baud
 	uint16_t clkDiv = 1666;
@@ -79,5 +75,4 @@ void UART_Send(uint8_t data) {
 void UART_SendStr(char *str) {
 	for(; *str != 0; str++)
 		UART_Send(*str);
->>>>>>> origin/master
 }
