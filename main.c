@@ -5,10 +5,17 @@
  */
 
 #include "MotorDriver.h"
+#include "UART.h"
 #include <stdint.h>
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	
+    UART_Init();
+
+    for(;;) {
+    	UART_SendStr("Hello, World!\r\n");
+    }
+
     MotorDriver_Init();
     MotorDriver_ReadInit();
     P1DIR |= BIT6 | BIT0;
@@ -27,7 +34,6 @@ int main(void) {
 
 		for(i = 0; i<100000; i++);
     }
-
 
 	return 0;
 }
