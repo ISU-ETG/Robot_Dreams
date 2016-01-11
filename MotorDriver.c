@@ -19,7 +19,8 @@
  */
 
 void MotorDriver_Init() {
-
+	//Initialize essential MSP430 settings
+	Essential_Init();
 
 	//Set pin data directions to output
 	//P2DIR |= BIT1 + BIT2 + BIT4 + BIT5;
@@ -46,7 +47,6 @@ void MotorDriver_Init() {
 
 	TA1CCR1 = 0;
 	TA1CCR2 = 0;
-
 }
 
 void MotorDriver_SetLeft(int16_t speed) {

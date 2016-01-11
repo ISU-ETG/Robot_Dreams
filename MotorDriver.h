@@ -10,6 +10,7 @@
 
 #include <MSP430.h>
 #include <stdint.h>
+#include "Util.h"
 
 #define SET_BIT(PORT, BIT) 		PORT |= BIT
 #define CLEAR_BIT(PORT, BIT) 	PORT &= ~(BIT)

@@ -8,18 +8,24 @@
 #include "UART.h"
 #include <stdint.h>
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	
     UART_Init();
 
+    //P1DIR |= BIT6 | BIT0;
+    //P1OUT = 0;
+    //P1OUT |= BIT6 | BIT0;
+
     for(;;) {
-    	UART_SendStr("Hello, World!\r\n");
+    	//int16_t data = UART_Read();
+
+    	if(IFG2 & UCA0RXIFG) {
+    		UART_Send('A');
+    	}
     }
 
     MotorDriver_Init();
     MotorDriver_ReadInit();
-    P1DIR |= BIT6 | BIT0;
-    P1OUT |= BIT6 | BIT0;
+   // P1DIR |= BIT6 | BIT0;
+   // P1OUT |= BIT6 | BIT0;
 
     while(1) {
 		MotorDriver_SetLeft(255);
