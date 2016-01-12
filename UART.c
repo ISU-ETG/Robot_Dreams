@@ -13,6 +13,7 @@ uint8_t _rxEnd;
 uint8_t _rxBuffer[RX_BUFFER_SIZE];
 
 void UART_Init() {
+
 	//Initialize essential MSP430 settings
 	Essential_Init();
 
@@ -62,17 +63,20 @@ void UART_Init() {
 	P1SEL |= BIT1 | BIT2;
 	P1SEL2 |= BIT1 | BIT2;
 
+	//Enable the UART module
+	UCA0CTL1 &= ~UCSWRST;
+
 	//Enable RX interrupt
-	//IE2 |= UCA0RXIE;
+	IE2 |= UCA0RXIE;// | UCA0TXIE;
 
 	//Enable global interrupts
-	_BIS_SR(GIE);
+	__bis_SR_register(GIE);
 
 	_rxStart = 0;
 	_rxEnd = 0;
 
-	//Enable the UART module
-	UCA0CTL1 &= ~UCSWRST;
+
+
 }
 
 void UART_Send(uint8_t data) {
@@ -106,15 +110,21 @@ uint8_t UART_ReadAvailable() {
 	return _rxStart != _rxEnd;
 }
 
-#pragma vector=USCIAB0RX_VECTOR
+#pragma vector = USCIAB0RX_VECTOR
 __interrupt void USCI0RX_ISR() {
 	uint8_t data = UCA0RXBUF;
 
-	UART_Send(data);
-
+	//UART_Send(data);
+	//UART_Send('A');
+	P1OUT ^= BIT6;
 	//add byte to RX buffer
 	_rxBuffer[_rxEnd] = data;
 
 	//set _rxEnd = (_rxEnd + 1) mod RX_BUFFER_SIZE
 	_rxEnd = (_rxEnd + 1) & RX_BUFFER_MASK;
+}
+
+#pragma vector = USCIAB0TX_VECTOR
+__interrupt void USCI0TX_ISR() {
+	P1OUT ^= BIT0;
 }
