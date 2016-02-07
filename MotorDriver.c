@@ -33,7 +33,7 @@ void MotorDriver_Init() {
 	CLEAR_BIT(RM_PORT, RM_IN1 | RM_IN2);
 
 	//Clock divider 1
-	TA1CTL = TASSEL1 | MC0;
+	TA1CTL = TASSEL1 | MC0 | ID1 | ID0;
 
 	//Set output mode to off
 	TA1CCTL0 = 0;
@@ -55,7 +55,7 @@ void MotorDriver_SetLeft(int16_t speed) {
 		//P2SEL &= ~(BIT1);
 		//P2OUT &= ~BIT1;
 		CLEAR_BIT(LM_SEL, LM_IN1);
-		CLEAR_BIT(LM_PORT, BIT1);
+		CLEAR_BIT(LM_PORT, LM_IN1);
 
 		//Set left motor in2 to output PWM
 		//P2SEL |= BIT2;
@@ -92,6 +92,7 @@ void MotorDriver_SetRight(int16_t speed) {
 		//Set right motor in1 to 0
 		//P2SEL &= ~(BIT4);
 		CLEAR_BIT(RM_SEL, RM_IN1);
+		CLEAR_BIT(RM_PORT, RM_IN1);
 
 		//Set right motor in2 to output PWM
 		//P2SEL |= BIT5;
@@ -105,56 +106,16 @@ void MotorDriver_SetRight(int16_t speed) {
 		SET_BIT(RM_SEL, RM_IN1);
 		//Set left motor in2 to 0
 		//P2SEL &= ~(BIT5);
+		CLEAR_BIT(RM_SEL, RM_IN2);
+		CLEAR_BIT(RM_PORT, RM_IN2);
 
 	}
 	else {
 		//P2SEL &= ~(BIT4 + BIT5);
 		CLEAR_BIT(RM_SEL, RM_IN1 | RM_IN2);
+		CLEAR_BIT(RM_PORT, RM_IN1 | RM_IN2);
 		return;
 	}
 
 	TA1CCR2 = speed;
-}
-
-
-void MotorDriver_ReadInit(void)
-{
-	//Timer A0
-
-	//Set P1.1 (P1.0) to input
-	//P1DIR &= ~(BIT1);
-	CLEAR_BIT(MOTOR_READ_DIR, RM_READ);
-
-	//P1SEL |= BIT1;
-	SET_BIT(MOTOR_READ_SEL, RM_READ);
-	//Set SMCLK, Continuous, Interupt Enable
-	TA0CTL = TASSEL1 | MC1 | TAIE;
-
-	//Capture Rising / Falling, Capture Mode, CC Interupt Enable
-	TA0CCTL0 |= CM1 | CM0 | CAP | CCIE;
-	_BIS_SR(GIE);
-
-}
-
-//TimerA0 Input Capture
-#pragma vector = TIMER0_A0_VECTOR
-__interrupt void timer_A1(void)
-{
-	P1OUT ^= BIT0;
-}
-
-//TimerA0 Overflows
-#pragma vector = TIMER0_A1_VECTOR
-__interrupt void timer_A0(void)
-{
-	switch(TAIV)
-	{
-
-	case 2:
-		P1OUT ^= BIT0;
-	//Overflow
-	case 10:
-		P1OUT ^= (BIT6);
-		break;
-	}
 }

@@ -39,6 +39,4 @@ void MotorDriver_SetLeft(int16_t speed);
 
 void MotorDriver_SetRight(int16_t speed);
 
-void MotorDriver_ReadInit(void);
-
 #endif /* MOTORDRIVER_H_ */

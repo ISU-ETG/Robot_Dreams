@@ -17,7 +17,7 @@ void Essential_Init() {
 	//Disable the watchdog timer
 	WDTCTL = WDTPW | WDTHOLD;
 
-	//Set DCO to 1Mhz
+	//Set DCO to 16Mhz
 	BCSCTL1 = CALBC1_16MHZ;
 	DCOCTL = CALDCO_16MHZ;
 

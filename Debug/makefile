@@ -11,6 +11,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./MotorDriver.obj" \
+"./Timer.obj" \
 "./UART.obj" \
 "./Util.obj" \
 "./main.obj" \
@@ -152,8 +153,8 @@ Robot_Dreams.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "MotorDriver.pp" "UART.pp" "Util.pp" "main.pp" 
-	-$(RM) "MotorDriver.obj" "UART.obj" "Util.obj" "main.obj" 
+	-$(RM) "MotorDriver.pp" "Timer.pp" "UART.pp" "Util.pp" "main.pp" 
+	-$(RM) "MotorDriver.obj" "Timer.obj" "UART.obj" "Util.obj" "main.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
